@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace edlink_n8
 {
@@ -54,9 +50,6 @@ namespace edlink_n8
             0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
         };
 
-
-
-
         public static UInt32 calc(UInt32 crc_base, byte []data, int offset, int len)
         {
 
@@ -69,7 +62,5 @@ namespace edlink_n8
 
             return (UInt32)(crc_base ^ ~0);
         }
-
-
     }
 }

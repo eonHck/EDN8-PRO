@@ -6,12 +6,10 @@ namespace edlink_n8
 {
     class Program
     {
-
         static Edio edio;
         static Usbio usb;
         static void Main(string[] args)
         {
-
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             Console.WriteLine("edlink-n8 v" + Assembly.GetEntryAssembly().GetName().Version);
@@ -27,9 +25,7 @@ namespace edlink_n8
                 Console.WriteLine("ERROR: " + x.Message);
                 Console.ResetColor();
             }
-
         }
-
 
         static void edlink(string[] args)
         {
@@ -52,7 +48,6 @@ namespace edlink_n8
                 edio.exitServiceMode();
             }
 
-
             if (args.Length == 0)
             {
                 edio.getConfig().printFull();
@@ -65,17 +60,13 @@ namespace edlink_n8
                 return;
             }
 
-
             cmdProcessor(args);
         }
 
-
         static void cmdProcessor(string []args)
         {
-
             string rom_path = null;
             string map_path = null;
-
 
             for (int i = 0; i < args.Length; i++)
             {
@@ -100,7 +91,6 @@ namespace edlink_n8
                 {
                     cmd_diagnosics();
                 }
-
 
                 if (s.Equals("-mkdir"))
                 {
@@ -129,7 +119,6 @@ namespace edlink_n8
                     continue;
                 }
 
-
                 if (s.EndsWith(".nes") || s.EndsWith(".fds"))
                 {
                     rom_path = args[i];
@@ -143,7 +132,6 @@ namespace edlink_n8
                 }
             }
 
-
             if (rom_path != null)
             {
                 //edio.getConfig().print();
@@ -151,9 +139,7 @@ namespace edlink_n8
             }
 
             Console.WriteLine("");
-
         }
-
 
         static void loadROM(string rom_path, string map_path)
         {
@@ -173,15 +159,12 @@ namespace edlink_n8
 
             Console.WriteLine();
             edio.getConfig().print();
-
         }
-        
 
         static void printState()
         {
             byte[] ss = new byte[256];
             int cons_y = Console.CursorTop;
-
 
             edio.memRD(Edio.ADDR_SSR, ss, 0, ss.Length);
             Console.SetCursorPosition(0, cons_y);
@@ -193,7 +176,6 @@ namespace edlink_n8
                 if (i >= 128 + 32 && i < 128 + 64)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-
                 }
                 else
                 {
@@ -202,12 +184,10 @@ namespace edlink_n8
 
                 Console.WriteLine("" + BitConverter.ToString(ss, i, 8) + "  " + BitConverter.ToString(ss, i + 8, 8));
             }
-
         }
 
         static void cmd_recovery()
         {
-
             Console.Write("EDIO core recovery...");
             edio.recovery();
             Console.WriteLine("ok");
@@ -233,7 +213,6 @@ namespace edlink_n8
             diag.start();
         }
 
-
         static void cmd_flashWrite(string addr_str, string path)
         {
             int addr = 0;
@@ -254,6 +233,5 @@ namespace edlink_n8
 
             Console.WriteLine("ok");
         }
-
     }
 }

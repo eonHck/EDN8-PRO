@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace edlink_n8
 {
     class NesRom
     {
-
         public const int ROM_TYPE_NES = 0;
         public const int ROM_TYPE_FDS = 1;
         public const int ROM_TYPE_OS = 2;
@@ -36,13 +31,11 @@ namespace edlink_n8
         int size;
         int rom_type;
 
-
         int prg_addr;
         int chr_addr;
 
         public NesRom(string path)
         {
-
             if (path == null) throw new Exception("ROM is not specified");
             int prg_size = 0;
             int chr_size = 0;
@@ -82,7 +75,6 @@ namespace edlink_n8
                     chr_addr = Edio.ADDR_OS_CHR;
                 }
 
-
                 prg = new byte[prg_size];
                 chr = new byte[chr_size];
                 Array.Copy(rom, dat_base, prg, 0, prg.Length);
@@ -109,14 +101,11 @@ namespace edlink_n8
                     if (src + block > rom.Length) block = rom.Length - src;
                     Array.Copy(rom, src, prg, dst, block);
                 }
-                
             }
             else
             {
                 throw new Exception("Unknown ROM format.");
             }
-
-                       
 
             int crc_len = Math.Min(rom.Length - dat_base, MAX_ID_CALC_LEN);
             crc = (int)CRC32.calc(0, rom, dat_base, crc_len);
@@ -133,7 +122,6 @@ namespace edlink_n8
             Console.WriteLine("ROM ID   : 0x{0:X8}", crc);
         }
 
-
         public int PrgSize
         {
             get { return prg.Length; }
@@ -149,7 +137,6 @@ namespace edlink_n8
             get { return srm_size; }
         }
 
-
         public int PrgAddr
         {
             get { return prg_addr; }
@@ -160,7 +147,6 @@ namespace edlink_n8
             get { return chr_addr; }
         }
 
-
         public byte Mapper
         {
             get { return mapper; }
@@ -170,7 +156,6 @@ namespace edlink_n8
         {
             get { return mirroring; }
         }
-
         public int Type
         {
             get { return rom_type; }
@@ -191,8 +176,6 @@ namespace edlink_n8
             get { return chr; }
         }
 
-        
-
         public byte[] getRomID()
         {
             byte[] bin = new byte[ines.Length + 4 * 3];
@@ -210,6 +193,5 @@ namespace edlink_n8
 
             return bin;
         }
-
     }
 }

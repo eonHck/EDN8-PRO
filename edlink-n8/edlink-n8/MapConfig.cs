@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace edlink_n8
 {
     class MapConfig
     {
-
         const int cfg_base = 32;
 
         public const byte cfg_mir_h = 0;
@@ -40,7 +35,6 @@ namespace edlink_n8
 
         public MapConfig(NesRom rom)
         {
-
             map_idx = rom.Mapper;
 
             if (rom.Mirroring == 'H') MapCfg |= cfg_mir_h;
@@ -55,13 +49,10 @@ namespace edlink_n8
             MasterVol = 8;
             SSKey_save = 0x14;//start + down
             SSKey_load = 0x18;//start + up
-
         }
-
 
         public void printFull()
         {
-            
             Console.WriteLine("mappper....." + map_idx + " sub."+Submap);
 
             Console.WriteLine("prg size...." + PrgSize / 1024 + "K");
@@ -88,7 +79,6 @@ namespace edlink_n8
             Console.WriteLine("unlock......" + ((Ctrl & ctrl_unlock) != 0 ? "yes" : "no"));
             Console.WriteLine("ctrl bits..." + Convert.ToString(Ctrl, 2).PadLeft(8, '0'));
             print();
-
         }
 
         public void print()
@@ -189,7 +179,6 @@ namespace edlink_n8
             set { config[cfg_base + 4] = value; }
         }
 
-
         public byte SSKey_save
         {
             get { return config[cfg_base + 5]; }
@@ -206,10 +195,5 @@ namespace edlink_n8
             get { return config[cfg_base + 7]; }
             set { config[cfg_base + 7] = value; }
         }
-
-        
-
-
-
     }
 }

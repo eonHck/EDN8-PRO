@@ -1,32 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace edlink_n8
 {
     class Usbio
     {
-
         Edio edio;
         const char cmd_test = 't';
         const char cmd_reboot = 'r';
         const char cmd_halt = 'h';
         const char cmd_sel_game = 'n';
         const char cmd_run_game = 's';
-        
 
         public Usbio(Edio edio)
         {
             this.edio = edio;
         }
 
-
         public void loadGame(NesRom rom, string map_path)
         {
-
             int resp;
    
             byte[] id_bin = rom.getRomID();
@@ -68,7 +61,6 @@ namespace edlink_n8
                 Console.WriteLine("ext mapper: " + map_path);
                 edio.fpgInit(File.ReadAllBytes(map_path), null);
             }
-            
         }
 
         public void loadOS(NesRom rom, string map_path)
@@ -101,7 +93,6 @@ namespace edlink_n8
                 byte[] map = File.ReadAllBytes(map_path);
                 edio.fpgInit(map, cfg);
             }
-
         }
 
         void copyFolder(string src, string dst)
@@ -116,9 +107,7 @@ namespace edlink_n8
                 copyFolder(dirs[i], dst + Path.GetFileName(dirs[i]));
             }
 
-
             string[] files = Directory.GetFiles(src);
-
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -158,7 +147,6 @@ namespace edlink_n8
             {
                 src_data = File.ReadAllBytes(src);
             }
-
 
             if (dst.ToLower().StartsWith("sd:"))
             {
@@ -225,7 +213,6 @@ namespace edlink_n8
             int map_pkg;
             byte[] map_rout = new byte[4096];
 
-
             edio.fileOpen("EDN8/MAPROUT.BIN", Edio.FAT_READ);
             edio.fileRead(map_rout, 0, map_rout.Length);
             edio.fileClose();
@@ -281,7 +268,5 @@ namespace edlink_n8
                 return null;
             }
         }
-
-
     }
 }

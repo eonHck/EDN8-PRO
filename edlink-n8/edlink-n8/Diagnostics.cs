@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace edlink_n8
@@ -40,7 +36,6 @@ namespace edlink_n8
             printResp(resp);
 
             testVDC();
-
 
             edio.rtcGet().print();
 
@@ -83,7 +78,6 @@ namespace edlink_n8
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" ERROR");
             }
-
 
             Console.ForegroundColor = old;
 
@@ -146,7 +140,6 @@ namespace edlink_n8
             return 0;
         }
 
-
         void testVDC()
         {
             Vdc vdc;
@@ -176,7 +169,6 @@ namespace edlink_n8
             rtc_old = edio.rtcGet();
             rtc_now = rtc_old;
 
-
             while (rtc_now.sec == rtc_old.sec)
             {
                 rtc_now = edio.rtcGet();
@@ -191,9 +183,6 @@ namespace edlink_n8
             if (ticks < 980) return 0x03;
 
             return 0;
-
         }
-
-        
     }
 }

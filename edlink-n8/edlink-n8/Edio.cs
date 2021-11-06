@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Threading;
 
@@ -32,7 +28,6 @@ namespace edlink_n8
             v12 = BitConverter.ToUInt16(data, 4);
             vbt = BitConverter.ToUInt16(data, 6);
         }
-
     }
 
     public class RtcTime
@@ -90,7 +85,6 @@ namespace edlink_n8
             Console.WriteLine("RTC date: " + dom.ToString("X2") + "." + mon.ToString("X2") + ".20" + yar.ToString("X2"));
             Console.WriteLine("RTC time: " + hur.ToString("X2") + ":" + min.ToString("X2") + ":" + sec.ToString("X2"));
         }
-
     }
 
     class Edio
@@ -173,7 +167,6 @@ namespace edlink_n8
         const byte CMD_F_DIR_MK = 0xD2;
         const byte CMD_F_DEL = 0xD3;
 
-
         const byte CMD_USB_RECOV = 0xF0;
         const byte CMD_RUN_APP = 0xF1;
 
@@ -208,7 +201,6 @@ namespace edlink_n8
 
         void openConnrction(string pname)
         {
-
             try
             {
                 port = new SerialPort(pname);
@@ -222,7 +214,6 @@ namespace edlink_n8
                 return;
             }
             catch (Exception) { }
-
 
             try
             {
@@ -264,7 +255,6 @@ namespace edlink_n8
             return buff[0] | (buff[1] << 8) | (buff[2] << 16) | (buff[3] << 24);
         }
 
-
         void tx16(int arg)
         {
             byte[] buff = new byte[2];
@@ -293,7 +283,6 @@ namespace edlink_n8
             return (byte)port.ReadByte();
         }
       
-
         void txData(byte[] buff)
         {
             txData(buff, 0, buff.Length);
@@ -309,7 +298,6 @@ namespace edlink_n8
                 port.Write(buff, offset, block);
                 len -= block;
                 offset += block;
-
             }
         }
 
@@ -317,8 +305,6 @@ namespace edlink_n8
         {
             port.Write(str);
         }
-
-
 
         void txDataACK(byte[] buff, int offset, int len)
         {
@@ -334,17 +320,14 @@ namespace edlink_n8
 
                 len -= block;
                 offset += block;
-
             }
         }
-
 
         void rxData(byte[] buff, int offset, int len)
         {
             for (int i = 0; i < len;)
             {
                 i += port.Read(buff, offset + i, len - i);
-
             }
         }
 
@@ -419,7 +402,6 @@ namespace edlink_n8
             return resp & 0xff;
         }
 
-
         public void diskInit()
         {
             txCMD(CMD_DISK_INIT);
@@ -434,14 +416,12 @@ namespace edlink_n8
             tx32(addr);
             tx32(slen);
 
-
             for (int i = 0; i < slen; i++)
             {
                 resp = (byte)port.ReadByte();
                 if (resp != 0) throw new Exception("disk read error: " + resp);
                 rxData(buff, i * 512, 512);
             }
-
         }
 
 
@@ -464,18 +444,15 @@ namespace edlink_n8
             if (resp != 0) throw new Exception("dir read error: " + resp.ToString("X2"));
 
             return rxFileInfo();
-
         }
 
         public void dirLoad(string path, int sorted)
         {
-
             txCMD(CMD_F_DIR_LD);
             tx8(sorted);
             txString(path);
             checkStatus();
         }
-
 
         public int dirGetSize()
         {
@@ -493,14 +470,11 @@ namespace edlink_n8
             tx16(amount);
             tx16(max_name_len);
 
-
-
             for (int i = 0; i < amount; i++)
             {
                 resp = rx8();
                 if (resp != 0) throw new Exception("dir read error: " + resp.ToString("X2"));
                 inf[i] = rxFileInfo();
-
             }
 
             return inf;
@@ -527,10 +501,8 @@ namespace edlink_n8
 
         public void fileRead(byte[] buff, int offset, int len)
         {
-
             txCMD(CMD_F_FRD);
             tx32(len);
-
 
             while (len > 0)
             {
@@ -542,15 +514,11 @@ namespace edlink_n8
                 rxData(buff,  offset, block);
                 offset += block;
                 len -= block;
-
             }
-
         }
 
         public void fileRead(int addr, int len)
         {
-
-
             while (len > 0)
             {
                 int block = 0x10000;
@@ -564,9 +532,7 @@ namespace edlink_n8
 
                 len -= block;
                 addr += block;
-
             }
-
         }
 
         public void fileWrite(byte[] buff, int offset, int len)
@@ -592,7 +558,6 @@ namespace edlink_n8
 
                 len -= block;
                 addr += block;
-
             }
         }
 
@@ -615,7 +580,6 @@ namespace edlink_n8
             txString(path);
             checkStatus();
         }
-
 
         public void memWR(int addr, byte[] buff, int offset, int len)
         {
@@ -644,7 +608,6 @@ namespace edlink_n8
             int resp = rx8();
             if (resp != 0) throw new Exception("file access error: " + resp.ToString("X2"));
             return rxFileInfo();
-
         }
 
         public void fifoWR(byte [] data, int offset, int len)
@@ -676,7 +639,6 @@ namespace edlink_n8
             return true;
         }
 
-
         public UInt32 memCRC(int addr, int len)
         {
             txCMD(CMD_MEM_CRC);
@@ -697,8 +659,7 @@ namespace edlink_n8
 
             resp = rx8();
             if (resp != 0) throw new Exception("Disk read error: " + resp.ToString("X2"));
-
-
+            
             return (UInt32)rx32();
         }
 
@@ -709,7 +670,6 @@ namespace edlink_n8
             tx32(len);
             rxData(buff, offset, len);
         }
-
 
         public void flaWR(int addr, byte[] buff, int offset, int len)
         {
@@ -728,7 +688,6 @@ namespace edlink_n8
             txDataACK(data, 0, data.Length);
             checkStatus();
         }
-
 
         public void fpgInit(int flash_addr, MapConfig cfg)
         {
@@ -759,7 +718,6 @@ namespace edlink_n8
             txData(cfg.getBinary());
         }
 
- 
         public void setConfig(MapConfig cfg)
         {
             byte[] bin_cfg = cfg.getBinary();
@@ -814,7 +772,6 @@ namespace edlink_n8
                 throw new Exception("Device not in service mode");
             }
 
-
             byte[] crc = new byte[4];
             flaRD(ADDR_FLA_ICOR + 4, crc, 0, 4);
 
@@ -836,12 +793,10 @@ namespace edlink_n8
             {
                 throw new Exception("recovery error: " + status.ToString("X2"));
             }
-            
         }
 
         public void exitServiceMode()
         {
-
             if (!isServiceMode()) return;
 
             txCMD(CMD_RUN_APP);
@@ -868,7 +823,6 @@ namespace edlink_n8
 
         void bootWait()
         {
-
             for (int i = 0; i < 10; i++)
             {
                 try
@@ -885,8 +839,5 @@ namespace edlink_n8
 
             throw new Exception("boot timeout");
         }
-
-       
-
     }
 }
